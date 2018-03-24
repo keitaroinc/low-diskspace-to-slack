@@ -14,7 +14,7 @@ while read item; do
     mountedOn=`echo $item | cut -d" " -f3`
 
     # for the filesystems with more than 80% disk usage
-    if [[ "$percentage" -ge "80" ]]; then
+    if [[ "$percentage" -ge "'$ENV_DF_PERCENTAGE'" ]]; then
         # if it's a rbd device
         if [[ "$device" =~ rbd ]]; then
 
@@ -24,15 +24,15 @@ while read item; do
             # post the request to the slack integration
             curl -X POST \
             -H 'Content-type: application/json' \
-            --data '{"attachments": [{"fallback": "High disk usage found on one or more devices", "color": "#e01563", "title": "High disk usage on *'"$host"'*!", "fields": [{"title": "Host", "value": "'"$host"'"}, {"title": "Device", "value": "'"$device"'"}, {"title": "Used by", "value": "'"$usedBy"'"}, {"title": "Percentage used", "value": "'"$percentage"'%"}, {"title": "Mount","value": "'"$mountedOn"'"}]}], "channel": "'"$ENV_SLACK_CHANNEL"'", "link_names": 1, "username": "disk-usage-bot", "icon_emoji": ":floppy_disk:"}' \
-            $ENV_SLACK_HOOK
+            --data '{"attachments": [{"fallback": "High disk usage found on one or more devices", "color": "#e01563", "title": "High disk usage on *'"$host"'*!", "fields": [{"title": "Host", "value": "'"$host"'"}, {"title": "Device", "value": "'"$device"'"}, {"title": "Used by", "value": "'"$usedBy"'"}, {"title": "Percentage used", "value": "'"$percentage"'%"}, {"title": "Mount","value": "'"$mountedOn"'"}]}], "channel": "'"$ENV_DF_SLACK_CHANNEL"'", "link_names": 1, "username": "disk-usage-bot", "icon_emoji": ":floppy_disk:"}' \
+            $ENV_DF_SLACK_HOOK
         # else if it's other device
         else
             # post the request to the slack integration
             curl -X POST \
             -H 'Content-type: application/json' \
-            --data '{"attachments": [{"fallback": "High disk usage found on one or more devices", "color": "#e01563", "title": "High disk usage on *'"$host"'*!", "fields": [{"title": "Host", "value": "'"$host"'"}, {"title": "Device", "value": "'"$device"'"}, {"title": "Percentage used","value": "'"$percentage"'%"}, {"title": "Mount","value": "'"$mountedOn"'"}]}], "channel": "'"$ENV_SLACK_CHANNEL"'", "link_names": 1, "username": "disk-usage-bot", "icon_emoji": ":floppy_disk:"}' \
-            $ENV_SLACK_HOOK
+            --data '{"attachments": [{"fallback": "High disk usage found on one or more devices", "color": "#e01563", "title": "High disk usage on *'"$host"'*!", "fields": [{"title": "Host", "value": "'"$host"'"}, {"title": "Device", "value": "'"$device"'"}, {"title": "Percentage used","value": "'"$percentage"'%"}, {"title": "Mount","value": "'"$mountedOn"'"}]}], "channel": "'"$ENV_DF_SLACK_CHANNEL"'", "link_names": 1, "username": "disk-usage-bot", "icon_emoji": ":floppy_disk:"}' \
+            $ENV_DF_SLACK_HOOK
         fi
     fi
 
