@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Copyright (c) 2018 Keitaro AB
+
+# Use of this source code is governed by an MIT license
+# that can be found in the LICENSE file or at
+# https://opensource.org/licenses/MIT.
+
 # get the disk usage output, and format it to get only filesystem, percentage used and mountpoint
 usageList=`df -h | grep ^/dev | tr -s " " | cut -d" " -f1,5,6`
 
